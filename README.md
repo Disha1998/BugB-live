@@ -39,15 +39,15 @@ to create real value for their contribution and to sustain the community work .
 of the BugBuzzer community .
 
 
-#Current Product: MVP
+# Current Product: MVP
 
 ![bug](https://user-images.githubusercontent.com/69969675/160269677-c66b3e01-85f4-442a-bcce-2c369a249cfe.png) 
 
 
-#Journey
+# Journey
 
 
-##Tech Stack
+## Tech Stack
 
 **Polygon-** Tokenize Bounties as NFT and mint them on Polygon Testnet .
 **💾Filecoin/IPFS:** Data of all the a) reward based NFT games, b) contests and c) user's post NFT are stored NFT Metadata on IPFS.
