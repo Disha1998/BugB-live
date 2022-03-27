@@ -37,3 +37,27 @@ to create real value for their contribution and to sustain the community work .
 
 **4) Connect with Experts:** People can connect , collaborate and hire expert developers
 of the BugBuzzer community .
+
+
+#Current Product: MVP
+
+![bug](https://user-images.githubusercontent.com/69969675/160269677-c66b3e01-85f4-442a-bcce-2c369a249cfe.png) 
+
+
+#Journey
+
+
+##Tech Stack
+
+**Polygon-** Tokenize Bounties as NFT and mint them on Polygon Testnet .
+**💾Filecoin/IPFS:** Data of all the a) reward based NFT games, b) contests and c) user's post NFT are stored NFT Metadata on IPFS.
+1 ) NFT Metadata of Bug campaigns 2 ) Json data of Q & A , Programming challenges .
+
+
+**Chainlink-** Price data feed from Chainlink oracles to fetch latest price of
+cryptocurrencies and donations token price like Matic - USD Ether - USD
+
+
+
+**WAGMI 😊🚀🚀**
+
