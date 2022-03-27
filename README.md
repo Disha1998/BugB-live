@@ -44,8 +44,6 @@ of the BugBuzzer community .
 ![bug](https://user-images.githubusercontent.com/69969675/160269677-c66b3e01-85f4-442a-bcce-2c369a249cfe.png) 
 
 
-# Journey
-
 
 ## Tech Stack
 
