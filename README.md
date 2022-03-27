@@ -50,6 +50,8 @@ of the BugBuzzer community .
 ## Tech Stack
 
 **Polygon-** Tokenize Bounties as NFT and mint them on Polygon Testnet .
+
+
 **💾Filecoin/IPFS:** Data of all the a) reward based NFT games, b) contests and c) user's post NFT are stored NFT Metadata on IPFS.
 1 ) NFT Metadata of Bug campaigns 2 ) Json data of Q & A , Programming challenges .
 
