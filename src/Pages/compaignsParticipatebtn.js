@@ -1,14 +1,70 @@
-import React from "react";
-import { Box, Grid, Paper, TextField, Typography, Button } from "@mui/material";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
+import React, { useState } from "react";
+import {
+  Stack,
+  TextField,
+  FormControl,
+  Box,
+  Container,
+  Typography,
+  TextareaAutosize,
+} from "@mui/material";
+import DialogActions from "@mui/material/DialogActions";
+import Grid from "@material-ui/core/Grid";
+import Button from "@mui/material/Button";
+import { useFormik, Form, FormikProvider } from "formik";
+import { useMoralis } from "react-moralis";
 
-// import Button from "@mui/material/Button";
-// import "./ProductDetail.css";
+export default function Participatebtn(props) {
+  const { Moralis, user } = useMoralis();
 
-export default function Participatebtn() {
-  const paperStyle = { height: "74vh", width: 500, marginTop: "127px" };
+  const [tags, setTags] = React.useState(["Tags"]);
+  const [bugTitle, SetbugTitle] = useState("");
+  // const [bugTag, SetbugTag] = useState([]);
+  const [bugDesc, SetbugDesc] = useState("");
+  const [loading, setLoading] = useState(false);
   let tagInput;
-  const [tags, setTags] = React.useState(["Tags", "Input"]);
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, val) => {
+    setValue(val);
+    console.log(val);
+  };
+
+  const participatecompaigns = Moralis.Object.extend("CompaignsParticipate");
+  const CompaignsParticipate = new participatecompaigns();
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      tags: "",
+      description: "",
+    },
+    onSubmit: async (values, { resetForm }) => {
+      const formData = {
+        title: values.title,
+        tags: tags,
+        description: values.description,
+      };
+      console.log(formData, "formData");
+
+      try {
+        setLoading(true);
+        CompaignsParticipate.set("from", user.attributes.username);
+        CompaignsParticipate.set("title", formData.title);
+        CompaignsParticipate.set("tag", formData.tags);
+        CompaignsParticipate.set("description", formData.description);
+
+        await CompaignsParticipate.save();
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        // console.log(error);
+        alert(error);
+      }
+      resetForm();
+    },
+  });
 
   const removeTag = (i) => {
     const newTags = [...tags];
@@ -30,55 +86,46 @@ export default function Participatebtn() {
       removeTag(tags.length - 1);
     }
   };
+
   return (
-    <>
-      <Grid align="center">
-        {/* <Box
-          sx={{
-            width: 500,
-            maxWidth: "100%",
-          }}
-        > */}
-        <Paper elevation={10} style={paperStyle}>
-          <Typography
-            variant="h5"
-            sx={{
-              pt: 6,
-              fontWeight: "bolder",
-              color: " rgb(216, 33, 72)",
-              TextDecoder: "none",
-              border: "none",
-            }}
-          >
-            Ask A Question
-          </Typography>
+    <Container>
+      <Typography
+        variant="h5"
+        sx={{
+          pt: 16,
+          fontWeight: "bolder",
+          color: " rgb(216, 33, 72)",
+          TextDecoder: "none",
+          border: "none",
+          textAlign: "center",
+        }}
+      >
+        Participate in campaign
+      </Typography>
+      <form
+        onSubmit={formik.handleSubmit}
+        style={{
+          justifyContent: "center",
+          marginLeft: "12vw",
+          marginRight: "12vw",
+          marginTop: "110px",
+        }}
+      >
+        <Stack spacing={3}>
           <TextField
+            onChange={(e) => SetbugTitle(e.target.value)}
+            required
             fullWidth
             label="Bug Title"
-            id="fullWidth"
-            // color="secondary"
-            style={{
-              width: "29vw",
-              marginTop: "60px",
-              //   border:"1px solid rgb(216, 33, 72)",
-              //   borderRadius:"5px",
-              //   borderColor: " rgb(216, 33, 72) !important",
-            }}
-          />
-          {/* <CssTextField label="Custom CSS" id="custom-css-outlined-input" />
-          <ValidationTextField
-            label="CSS validation style"
-            required
-            variant="outlined"
-            defaultValue="Success"
-            id="validation-outlined-input"
-          /> */}
-
+            name="title"
+            id="to"
+            type="text"
+            {...formik.getFieldProps("title")}
+          />{" "}
           <div
             className="input-tag"
             style={{
-              width: "25vw",
-              //  borderColor: " rgb(216, 33, 72)"
+              width: "auto",
             }}
           >
             <ul className="input-tag__tags">
@@ -91,53 +138,65 @@ export default function Participatebtn() {
                       removeTag(i);
                     }}
                   >
-                    +
+                    {/* {console.log(tags,'tagg')} */}+
                   </button>
                 </li>
               ))}
               <li className="input-tag__tags__input">
                 <input
+                  // required
+                  // onChange={(e)=>bugTagschange(e)}
+                  onChange={(e) => setTags(e.target.value)}
+                  name="tags"
                   type="text"
                   onKeyDown={inputKeyDown}
                   ref={(c) => {
                     tagInput = c;
                   }}
+                  {...formik.getFieldProps("tags")}
                 />
+                ;{/* })} */}
               </li>
             </ul>
           </div>
-
           <TextareaAutosize
+            onChange={(e) => SetbugDesc(e.target.value)}
             fullWidth
             required
+            name="description"
             aria-label="minimum height"
-            // style={{ width: "auto", marginTop: "60px" }}
-            minRows={3}
+            minRows={5}
             placeholder="Description"
             style={{
-              width: "29vw",
+              width: "auto",
+              borderColor: "rgb(196 196 196)",
+              borderRadius: "5px",
               marginTop: "60px",
-              //   borderColor: " rgb(216, 33, 72)",
             }}
-          />
-
-          <Button
-            variant="contained"
-            size="small"
-            style={{
-              backgroundColor: "#D82148",
-              textTransform: "capitalize",
-              border: "2px solid #D82148",
-              marginRight: "18px",
-              fontWeight: "bold",
-            }}
-            sx={{ borderRadius: 2, mt: 5 }}
-          >
-            Submit
-          </Button>
-        </Paper>
-        {/* </Box> */}
-      </Grid>
-    </>
+            {...formik.getFieldProps("description")}
+          ></TextareaAutosize>
+          {/* ----------------------------------------------- */}
+        </Stack>
+        <DialogActions>
+          <Grid container justifyContent="center">
+            <Button
+              variant="contained"
+              type="submit"
+              size="midium"
+              style={{
+                backgroundColor: "#D82148",
+                textTransform: "capitalize",
+                border: "2px solid #D82148",
+                marginRight: "18px",
+                fontWeight: "bold",
+              }}
+              sx={{ borderRadius: 2, mt: 5 }}
+            >
+              Submit
+            </Button>
+          </Grid>
+        </DialogActions>
+      </form>
+    </Container>
   );
 }
